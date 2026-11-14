@@ -4,6 +4,8 @@ pub use prost;
 pub use prost_types;
 #[cfg(feature = "__proto")]
 pub use tonic;
+#[cfg(feature = "__proto")]
+pub use tonic_prost;
 
 #[cfg(feature = "__proto")]
 pub mod inferoxa {
@@ -11,6 +13,6 @@ pub mod inferoxa {
         tonic::include_proto!("inferoxa.v1");
 
         #[cfg(feature = "server")]
-        const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("inferoxa.v1.bin");
+        pub const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("inferoxa.v1");
     }
 }

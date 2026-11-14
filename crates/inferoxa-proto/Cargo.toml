@@ -7,12 +7,13 @@ edition.workspace = true
 tonic = { workspace = true, optional = true }
 prost = { workspace = true, optional = true }
 prost-types = { workspace = true, optional = true }
+tonic-prost = { workspace = true, optional = true }
 
 [build-dependencies]
 tonic-prost-build = { workspace = true, optional = true }
 
 [features]
-__proto = ["tonic-prost-build", "tonic", "prost", "prost-types"]
+__proto = ["tonic-prost-build", "tonic", "tonic-prost", "prost", "prost-types"]
 
 models = ["__proto"]
 embeddings = ["__proto"]
