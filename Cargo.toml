@@ -1,0 +1,26 @@
+[workspace]
+members = [
+    "crates/inferoxa-llama-server",
+    "crates/inferoxa-proto",
+]
+
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+
+[workspace.dependencies]
+inferoxa-proto = { path = "./crates/inferoxa-proto" }
+
+tonic = "0.14.9"
+tonic-prost = "0.14.9"
+tonic-prost-build = "0.14.9"
+prost = "0.14.6"
+prost-types = "0.14.6"
+
+llama-cpp-2 = "0.1.161"
+
+serde = "1.0.229"
+toml = "1.2.1"
+
+clap = "4.6.7"

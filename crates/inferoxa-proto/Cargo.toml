@@ -1,0 +1,21 @@
+[package]
+name = "inferoxa-proto"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+tonic = { workspace = true, optional = true }
+prost = { workspace = true, optional = true }
+prost-types = { workspace = true, optional = true }
+
+[build-dependencies]
+tonic-prost-build = { workspace = true, optional = true }
+
+[features]
+__proto = ["tonic-prost-build", "tonic", "prost", "prost-types"]
+
+models = ["__proto"]
+embeddings = ["__proto"]
+
+server = []
+client = []

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package inferoxa.v1;
+
+//
+// Types
+//
+
+message Embedding {
+  repeated float embedding_vector = 1;
+}
+
+message EmbeddingUsage {
+  uint64 total_tokens = 1;
+}
+
+//
+// Request / Response
+//
+
+message CreateEmbeddingRequest {
+  // ID of the model to use for create embeddings.
+  string model = 1;
+  // Input texts to embed.
+  repeated string inputs = 2;
+  // The number of dimensions the resulting output embeddings should have.
+  // If this field uses for unsupported models, the API returns bad request error.
+  optional uint32 dimensions = 3;
+}
+
+message CreateEmbeddingResponse {
+  // ID of the model used for create embeddings.
+  string model = 1;
+  // Generated embeddings.
+  repeated Embedding embeddings = 2;
+  // The usage information for the request.
+  EmbeddingUsage usage = 3;
+}
+
+//
+// Service
+//
+
+service EmbeddingsService {
+  rpc CreateEmbeddings(CreateEmbeddingRequest) returns (CreateEmbeddingResponse);
+}

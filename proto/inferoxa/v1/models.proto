@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package inferoxa.v1;
+
+//
+// Types
+//
+
+enum ModelCapabilities {
+  MODEL_CAPABILITIES_UNSPECIFIED = 0;
+  MODEL_CAPABILITIES_EMBEDDING = 1;
+  MODEL_CAPABILITIES_COMPLETION = 2;
+}
+
+message Model {
+  // ID of this model
+  string model = 1;
+  // Supported model capabilities
+  repeated ModelCapabilities capabilities = 2;
+  // Additional information for embedding capabilities.
+  EmbeddingModelCapabilities embedding = 3;
+  // Additional information for completion capabilities.
+  CompletionModelCapabilities completion = 4;
+}
+
+message EmbeddingModelCapabilities {
+  // Default number of dimension for the model.
+  // If this field is unspecified,
+  optional uint32 default_dimension = 1;
+
+  oneof supported_dimensions {
+    EmbeddingModelDimensionRange range = 2;
+    EmbeddingModelDimensionChoice choices = 3;
+  }
+}
+
+message EmbeddingModelDimensionRange {
+  // minimum supported dimension
+  uint32 min_dimension = 1;
+  // maximum supported dimension
+  uint32 max_dimension = 2;
+}
+
+message EmbeddingModelDimensionChoice {
+  // Selectable choices of dimension
+  repeated uint32 choices = 1;
+}
+
+message CompletionModelCapabilities {}
+
+//
+// Request / Response
+//
+
+message ListModelsRequest {
+  // Capabilities filter. This field is OR condition.
+  repeated ModelCapabilities capabilities = 1;
+}
+
+message ListModelsResponse {
+  // List of matched models.
+  repeated Model models = 1;
+}
+
+//
+// Service
+//
+
+service ModelsService {
+  // Get list of models.
+  rpc ListModels(ListModelsRequest) returns (ListModelsResponse);
+}
