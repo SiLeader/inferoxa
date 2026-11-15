@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package inferoxa.v1;
+
+enum ChatPredefinedReasoningEffort {
+    CHAT_PREDEFINED_REASONING_EFFORT_UNSPECIFIED = 0;
+    CHAT_PREDEFINED_REASONING_EFFORT_NONE = 1;
+    CHAT_PREDEFINED_REASONING_EFFORT_LOW = 2;
+    CHAT_PREDEFINED_REASONING_EFFORT_MEDIUM = 3;
+    CHAT_PREDEFINED_REASONING_EFFORT_HIGH = 4;
+    CHAT_PREDEFINED_REASONING_EFFORT_EXTRA_HIGH = 5;
+    CHAT_PREDEFINED_REASONING_EFFORT_MAX = 6;
+}
+
+message ChatReasoningEffort {
+    oneof effort {
+        ChatPredefinedReasoningEffort predefined = 1;
+        string custom = 2;
+    }
+}

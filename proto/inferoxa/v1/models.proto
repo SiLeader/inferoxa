@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package inferoxa.v1;
 
+import "reasoning.proto";
+
 //
 // Types
 //
@@ -63,7 +65,16 @@ message EmbeddingModelDimensionChoice {
 
 // Details of the completion capability of a model.
 // There is no additional information at the moment.
-message CompletionModelCapabilities {}
+message CompletionModelCapabilities {
+    CompletionModelSupportedOptions supported_options = 1;
+    repeated ChatReasoningEffort supported_efforts = 2;
+}
+
+message CompletionModelSupportedOptions {
+    bool max_prompt_tokens = 1;
+    bool seed = 2;
+    bool context_length = 3;
+}
 
 //
 // Request / Response

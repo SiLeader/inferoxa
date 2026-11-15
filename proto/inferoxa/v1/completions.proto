@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package inferoxa.v1;
 
+import "reasoning.proto";
+
 import "google/protobuf/timestamp.proto";
 
 //
@@ -177,6 +179,10 @@ message ChatToolChoice {
     }
 }
 
+message ChatReasoningOptions {
+    ChatReasoningEffort effort = 1;
+}
+
 // delta
 
 // An incremental update of the assistant message in a streamed chat completion.
@@ -333,6 +339,7 @@ message CreateChatCompletionRequest {
     ChatToolChoice tool_choice = 4;
     // Generation options.
     CompletionOptions options = 5;
+    ChatReasoningOptions reasoning_options = 6;
 }
 
 message CreateChatCompletionResponse {
