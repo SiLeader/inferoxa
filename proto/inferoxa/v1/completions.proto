@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package inferoxa.v1;
 
-import "reasoning.proto";
+import "inferoxa/v1/reasoning.proto";
 
 import "google/protobuf/timestamp.proto";
 
