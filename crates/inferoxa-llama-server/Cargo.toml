@@ -4,7 +4,7 @@ version = "0.1.0"
 edition.workspace = true
 
 [dependencies]
-inferoxa-proto = { workspace = true, features = ["server", "embeddings", "models"] }
+inferoxa-proto = { workspace = true, features = ["server", "embeddings", "models", "completions"] }
 llama-cpp-2 = { workspace = true }
 
 serde = { workspace = true, features = ["derive"] }

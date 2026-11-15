@@ -7,6 +7,8 @@ fn main() {
             "../../proto/inferoxa/v1/embeddings.proto",
             #[cfg(feature = "models")]
             "../../proto/inferoxa/v1/models.proto",
+            #[cfg(feature = "completions")]
+            "../../proto/inferoxa/v1/completions.proto",
         ],
     );
 }

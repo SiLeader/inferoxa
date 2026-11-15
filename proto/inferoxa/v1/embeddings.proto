@@ -2,15 +2,22 @@ syntax = "proto3";
 
 package inferoxa.v1;
 
+import "google/protobuf/timestamp.proto";
+
 //
 // Types
 //
 
+// An embedding of a single input text.
 message Embedding {
-  repeated float embedding_vector = 1;
+  // The embedding vector.
+  // Its length is the number of dimensions of the embedding.
+  repeated float vector = 1;
 }
 
+// Token usage of an embeddings request.
 message EmbeddingUsage {
+  // Total number of tokens of all inputs.
   uint64 total_tokens = 1;
 }
 
@@ -18,23 +25,28 @@ message EmbeddingUsage {
 // Request / Response
 //
 
-message CreateEmbeddingRequest {
+message CreateEmbeddingsRequest {
   // ID of the model to use for create embeddings.
   string model = 1;
   // Input texts to embed.
   repeated string inputs = 2;
   // The number of dimensions the resulting output embeddings should have.
-  // If this field uses for unsupported models, the API returns bad request error.
+  // If this field is unspecified, the default number of dimensions of the model is used.
+  // If the model does not support the specified value, the API returns INVALID_ARGUMENT.
+  // See EmbeddingModelCapabilities for the supported values.
   optional uint32 dimensions = 3;
 }
 
-message CreateEmbeddingResponse {
-  // ID of the model used for create embeddings.
-  string model = 1;
+message CreateEmbeddingsResponse {
+  // ID of this response.
+  string id = 1;
   // Generated embeddings.
+  // The order and the number of elements are the same as CreateEmbeddingsRequest.inputs.
   repeated Embedding embeddings = 2;
   // The usage information for the request.
   EmbeddingUsage usage = 3;
+  // The time when the embeddings were created.
+  google.protobuf.Timestamp created = 4;
 }
 
 //
@@ -42,5 +54,6 @@ message CreateEmbeddingResponse {
 //
 
 service EmbeddingsService {
-  rpc CreateEmbeddings(CreateEmbeddingRequest) returns (CreateEmbeddingResponse);
+  // Create embeddings of the input texts.
+  rpc CreateEmbeddings(CreateEmbeddingsRequest) returns (CreateEmbeddingsResponse);
 }

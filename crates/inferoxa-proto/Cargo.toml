@@ -17,6 +17,7 @@ __proto = ["tonic-prost-build", "tonic", "tonic-prost", "prost", "prost-types"]
 
 models = ["__proto"]
 embeddings = ["__proto"]
+completions = ["__proto"]
 
 server = []
 client = []

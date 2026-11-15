@@ -6,46 +6,63 @@ package inferoxa.v1;
 // Types
 //
 
-enum ModelCapabilities {
-  MODEL_CAPABILITIES_UNSPECIFIED = 0;
-  MODEL_CAPABILITIES_EMBEDDING = 1;
-  MODEL_CAPABILITIES_COMPLETION = 2;
+// A kind of task that a model can perform.
+// Used to filter models in ListModelsRequest.
+enum ModelCapability {
+  MODEL_CAPABILITY_UNSPECIFIED = 0;
+  // The model can create embeddings. See EmbeddingsService.
+  MODEL_CAPABILITY_EMBEDDING = 1;
+  // The model can create completions. See CompletionsService.
+  MODEL_CAPABILITY_COMPLETION = 2;
 }
 
+// A model available on the provider.
 message Model {
-  // ID of this model
-  string model = 1;
-  // Supported model capabilities
-  repeated ModelCapabilities capabilities = 2;
+  // ID of this model.
+  // Use this value for the model field of other requests.
+  string id = 1;
   // Additional information for embedding capabilities.
-  EmbeddingModelCapabilities embedding = 3;
+  // The model supports embeddings if and only if this field is set.
+  EmbeddingModelCapabilities embedding = 2;
   // Additional information for completion capabilities.
-  CompletionModelCapabilities completion = 4;
+  // The model supports completions if and only if this field is set.
+  CompletionModelCapabilities completion = 3;
 }
 
+// Details of the embedding capability of a model.
 message EmbeddingModelCapabilities {
-  // Default number of dimension for the model.
-  // If this field is unspecified,
-  optional uint32 default_dimension = 1;
+  // Default number of dimensions for the model.
+  // This is used when CreateEmbeddingsRequest.dimensions is unspecified.
+  // If this field is unspecified, the default number of dimensions is unknown.
+  // The actual number can be obtained from the length of a returned embedding.
+  optional uint32 default_dimensions = 1;
 
+  // The numbers of dimensions that can be set to CreateEmbeddingsRequest.dimensions.
+  // If neither is set, the model does not support changing the number of dimensions.
   oneof supported_dimensions {
+    // Any number of dimensions within the range is supported.
     EmbeddingModelDimensionRange range = 2;
-    EmbeddingModelDimensionChoice choices = 3;
+    // Only the listed numbers of dimensions are supported.
+    EmbeddingModelDimensionChoice choice = 3;
   }
 }
 
+// A range of supported numbers of dimensions. Both ends are inclusive.
 message EmbeddingModelDimensionRange {
-  // minimum supported dimension
-  uint32 min_dimension = 1;
-  // maximum supported dimension
-  uint32 max_dimension = 2;
+  // Minimum supported number of dimensions.
+  uint32 min_dimensions = 1;
+  // Maximum supported number of dimensions.
+  uint32 max_dimensions = 2;
 }
 
+// A list of supported numbers of dimensions.
 message EmbeddingModelDimensionChoice {
-  // Selectable choices of dimension
+  // Selectable numbers of dimensions.
   repeated uint32 choices = 1;
 }
 
+// Details of the completion capability of a model.
+// There is no additional information at the moment.
 message CompletionModelCapabilities {}
 
 //
@@ -53,8 +70,10 @@ message CompletionModelCapabilities {}
 //
 
 message ListModelsRequest {
-  // Capabilities filter. This field is OR condition.
-  repeated ModelCapabilities capabilities = 1;
+  // Capabilities filter.
+  // Models that have at least one of these capabilities are returned (OR condition).
+  // If this field is empty, all models are returned.
+  repeated ModelCapability capabilities = 1;
 }
 
 message ListModelsResponse {
